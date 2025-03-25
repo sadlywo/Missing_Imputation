@@ -15,6 +15,9 @@ from Deep_Learning_Imputation_Methods import GRU_Imputation_Of_Missing_Data
 
 from Cal_Attitude import AdaptiveAttitudeEstimator
 from Cal_Attitude import calculate_attitude
+from Euler_Change_To_Tra import euler_to_rotation_matrix
+from Euler_Change_To_Tra import compute_trajectory
+from Euler_Change_To_Tra import plot_3d_trajectory
 
 if __name__ == "__main__":
     FileFolder = "./DataSet_Selected_All/"
@@ -27,7 +30,7 @@ if __name__ == "__main__":
     File_Sub_7 = "ROSARIO"
     File_Sub_8 = "WISDM"
 
-    File_Sub = File_Sub_5
+    File_Sub = File_Sub_8
 
     FileFolder_All = FileFolder + File_Sub + "/"+ File_Sub + ".txt"   #得到需要读取的文件名的绝对路径，这里直接使用相对路径下的文件名读取，同时修改对应的文件名为相应的文件夹名字方便读取
     # 根据原始数据的列数来判断使用哪一个列名，有两种情况，一种是六列的，一种是九列的，分别代表六轴和九轴
@@ -60,6 +63,11 @@ if __name__ == "__main__":
     Euler_Result.plot(subplots=True,
             figsize=(10, 2 * len(Euler_Result.columns)),  # 根据列数调整图像高度
             layout=(len(Euler_Result.columns), 1))  # 每列占据一行
+
+    # 计算轨迹并绘图
+    trajectory = compute_trajectory(Euler_Result)
+    plot_3d_trajectory(trajectory)
+
     plt.show()
     # Data = Original_Data_Read(".","1_Activity_4_all.txt")
     #
