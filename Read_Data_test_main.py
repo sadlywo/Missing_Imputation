@@ -36,7 +36,7 @@ if __name__ == "__main__":
     Dict_Pattern_Keys = File_Total  #得到模式的键值，和数值进行配对  ,这个是键
     Dict_Pattern = {k:v for k,v in zip(Dict_Pattern_Keys,File_Frequency)}   #这个是value  ,创建完成键值对
 
-    File_Sub = File_Sub_8
+    File_Sub = File_Sub_5
 
     FileFolder_All = FileFolder + File_Sub + "/"+ File_Sub + ".txt"   #得到需要读取的文件名的绝对路径，这里直接使用相对路径下的文件名读取，同时修改对应的文件名为相应的文件夹名字方便读取
     # 根据原始数据的列数来判断使用哪一个列名，有两种情况，一种是六列的，一种是九列的，分别代表六轴和九轴
