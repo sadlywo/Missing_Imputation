@@ -18,7 +18,8 @@ from Cal_Attitude import calculate_attitude
 from Euler_Change_To_Tra import euler_to_rotation_matrix
 from Euler_Change_To_Tra import compute_trajectory
 from Euler_Change_To_Tra import plot_3d_trajectory
-
+from Euler_Change_To_Tra import calculate_trajectory
+from Euler_Change_To_Tra import plot_2d_trajectory
 if __name__ == "__main__":
     FileFolder = "./DataSet_Selected_All/"
     File_Sub_1 = "AWESOME_GINS"
@@ -29,6 +30,11 @@ if __name__ == "__main__":
     File_Sub_6 = "PAMAP"
     File_Sub_7 = "ROSARIO"
     File_Sub_8 = "WISDM"
+
+    File_Total = [File_Sub_1,File_Sub_2,File_Sub_3,File_Sub_4,File_Sub_5,File_Sub_6,File_Sub_7,File_Sub_8]
+    File_Frequency = [200,50,200,30,60,140,20,20]  #各个数据集中的采集频率，这个采集频率按照不同的设置是不同的，需要输入到滤波器中
+    Dict_Pattern_Keys = File_Total  #得到模式的键值，和数值进行配对  ,这个是键
+    Dict_Pattern = {k:v for k,v in zip(Dict_Pattern_Keys,File_Frequency)}   #这个是value  ,创建完成键值对
 
     File_Sub = File_Sub_8
 
@@ -56,18 +62,19 @@ if __name__ == "__main__":
 
     # filter = AttitudeEstimator(dt=0.01)   #采样时间0.01
     if Temp_Data.shape[1] == 6:
-        Euler_Result = calculate_attitude(Acc_Data,Gyro_Data)
+        Euler_Result = calculate_attitude(Acc_Data,Gyro_Data, None, Frequency= 1/Dict_Pattern[File_Sub])
     elif Temp_Data.shape[1] == 9:
-        Euler_Result = calculate_attitude(Acc_Data,Gyro_Data,Mang_Data)  #有九轴的时候调用
+        Euler_Result = calculate_attitude(Acc_Data,Gyro_Data,Mang_Data,Frequency= 1/Dict_Pattern[File_Sub])  #有九轴的时候调用
     print(Euler_Result)
     Euler_Result.plot(subplots=True,
             figsize=(10, 2 * len(Euler_Result.columns)),  # 根据列数调整图像高度
             layout=(len(Euler_Result.columns), 1))  # 每列占据一行
 
     # 计算轨迹并绘图
-    trajectory = compute_trajectory(Euler_Result)
-    plot_3d_trajectory(trajectory)
-
+    # trajectory = compute_trajectory(Euler_Result)
+    trajectory = calculate_trajectory(Euler_Result, step_size=0.1)
+    # plot_3d_trajectory(trajectory)
+    plot_2d_trajectory(trajectory)
     plt.show()
     # Data = Original_Data_Read(".","1_Activity_4_all.txt")
     #

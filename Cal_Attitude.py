@@ -91,9 +91,9 @@ class AdaptiveAttitudeEstimator:
         return np.array([roll, pitch, yaw])
 
 
-def calculate_attitude(accel_df, gyro_df, mag_df=None):
+def calculate_attitude(accel_df, gyro_df, mag_df=None,Frequency = 0.1):
     # 自动判断输入类型
-    estimator = AdaptiveAttitudeEstimator()
+    estimator = AdaptiveAttitudeEstimator(beta=0.1, zeta=0.1, dt=Frequency)
     results = []
 
     for i in range(len(accel_df)):
